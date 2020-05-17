@@ -1,49 +1,31 @@
-CFLAGS=-Wall -Wextra -pedantic -O3 -I/usr/local/include/ -I../API/mosquitto/lib -I../API/mosquitto/lib/cpp -std=c++17
+CFLAGS=-Wall -Wextra -pedantic -O3 -I/usr/local/include/ -std=c++17
 #
 #LDFLAGS=-lstdc++fs
 .PHONY: all clean
 
-all : stringglean hashreplacer clear_empty_lines subofpub template_to_static
+all : bin/stringglean bin/hashreplacer bin/clear_empty_lines bin/template_to_static
 
-stringglean : stringglean.o
+
+bin/stringglean : obj/stringglean.o
 	${CXX} $^ -o $@ ${LDFLAGS}
 
 
-hashreplacer : hashreplacer.o
+bin/hashreplacer : obj/hashreplacer.o
 	${CXX} $^ -o $@ ${LDFLAGS}
 
 
-clear_empty_lines : clear_empty_lines.o
+bin/clear_empty_lines : obj/clear_empty_lines.o
 	${CXX} $^ -o $@ ${LDFLAGS}
 
 
-subofpub : subofpub.o
+bin/template_to_static : obj/template_to_static.o
 	${CXX} $^ -o $@ ${LDFLAGS}
 
 
-template_to_static : template_to_static.o
-	${CXX} $^ -o $@ ${LDFLAGS}
-
-
-
-stringglean.o : stringglean.cpp
+obj/%.o : %.cpp
+	bash tools/builddirs.sh
 	${CXX} -c $^ ${CFLAGS} -o $@ 
-
-hashreplacer.o : hashreplacer.cpp
-	${CXX} -c $^ ${CFLAGS} -o $@ 
-
-clear_empty_lines.o : clear_empty_lines.cpp
-	${CXX} -c $^ ${CFLAGS} -o $@ 
-
-subofpub.o : subofpub.cpp
-	${CXX} -c $^ ${CFLAGS} -o $@ 
-
-template_to_static.o : template_to_static.cpp
-	${CXX} -c $^ ${CFLAGS} -o $@ 
-
-
 
 
 clean : 
-	-rm -f *.o stringglean
-
+	-rm -f obj/*.o bin/*

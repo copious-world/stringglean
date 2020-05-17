@@ -10,6 +10,6 @@ DIR=./tools
 if [ -d "$DIR" ]; then
     echo "$DIR directory exists"
 else
-    mkdir tools
+    mkdir $DIR
 fi
 cp ${STRINGGLEANLOC}/tools/*.sh ./tools/
