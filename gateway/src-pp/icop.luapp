@@ -1,0 +1,31 @@
+
+#include "logmacrospar.hua"
+
+
+local CopperClass = {}
+--
+-- should be called from the factory..
+--
+function CopperClass:new (o)
+	o = o or {}   -- create object if user does not provide one
+	self.uuid = 111
+    self.loggerId = macro_logger(get_logger('CopperC'))
+	--
+	return o
+end
+
+function CopperClass:run_task()
+    --
+    macro_set_logger(self.loggerId) -- use the macros to write  -- symbolic replacement -- number set later
+
+    mcLog_critical("bad things going down" .. 5.4 .. "in situ:" .. PI .. "in vitro" .. 10 .. "times")
+    mcLog_error("bad things oopsin all around" .. 2)
+    mcLog_log("made it around to here")
+    mcLog_info("you should know")
+
+    print("run_task")
+    --
+end
+
+
+return CopperClass

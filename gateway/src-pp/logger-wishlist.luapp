@@ -1,0 +1,44 @@
+#include "logmacrospar.hua"
+
+--   -- load library
+macro_set_logger_lib(require("shm_logger")) -- set it to be used by macros -- precompile
+--
+--
+--
+local app_tag = "TestAPP"
+local shmkey = 3453
+local maxLoggers = 512
+local maxMessageSize = 250
+local cpu_index = 1  -- -- set by command line args
+local cpuCount = 4
+
+-- -- CALL INIT ONCE PER APPLICATION PROCESS/THREAD
+macro_logger(init(app_tag,maxLoggers,maxMessageSize,cpuCount,cpu_index,shmkey))
+-- -- CALL GET at least once -- call it per module or specific context (e.g. api lifecycle)
+-- --              -- get_logger returns an index from C++ lib
+macro_set_logger(macro_logger(get_logger('shm-1'))) -- use the macros to write  -- symbolic replacement -- number set later
+--
+--
+local start_time = os.clock()
+
+
+local instance_cop = require('icop')
+
+instance_cop:run_task()
+
+--
+--
+mcLog_critical("bad things going down" .. 5.4 .. "in situ:" .. PI .. "in vitro" .. 10 .. "times")
+mcLog_error("bad things oopsin all around" .. 2)
+mcLog_log("made it around to here")
+mcLog_info("you should know")
+
+
+
+-- 
+-- top level main process exits 
+macro_logger(release()) -- stop using this for the entire application
+
+--
+print(string.format("elapsed time: %.2f\n", os.clock() - start_time))
+print(collectgarbage("count"))

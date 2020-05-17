@@ -1,0 +1,15 @@
+1, CopperC
+2, TestAPP
+3, bad things going down
+4, bad things oopsin all around
+5, count
+6, elapsed time: %.2f\n
+7, in situ:
+8, in vitro
+9, logmacrospar.hua
+10, made it around to here
+11, run_task
+12, shm-1
+13, times
+14, you should know
+

@@ -1,0 +1,106 @@
+
+-- FOR USE WITH GPP preprocessor
+
+#define LOG_LEVEL_CRITICAL 0
+#define LOG_LEVEL_ERROR    1
+#define LOG_LEVEL_WARN     2
+#define LOG_LEVEL_LOG      3
+#define LOG_LEVEL_INFO     4
+#define LOG_LEVEL_DEBUG    5
+#define LOG_LEVEL_NONE	   6
+
+#ifndef LOG_LEVEL
+#define LOG_LEVEL LOG_LEVEL_ERROR
+#endif
+
+#if (LOG_LEVEL == LOG_LEVEL_NONE)
+#define writeLog_critical(lgr,msg)
+#define writeLog_error(lgr,msg)
+#define writeLog_warn(lgr,msg)
+#define writeLog_info(lgr,msg)
+#define writeLog_log(lgr,msg)
+#define writeLog_debug(lgr,msg)
+#endif
+
+-- -- -- -- -- -- -- --
+-- -- -- -- -- -- -- --
+
+#if (LOG_LEVEL == LOG_LEVEL_CRITICAL)
+#define writeLog_critical(lgr,msg) g_mlcl.critical(lgr,msg)
+#define writeLog_error(lgr,msg)
+#define writeLog_warn(lgr,msg)
+#define writeLog_info(lgr,msg)
+#define writeLog_log(lgr,msg)
+#define writeLog_debug(lgr,msg)
+#endif
+
+
+#if (LOG_LEVEL == LOG_LEVEL_ERROR)
+#define writeLog_critical(lgr,msg) g_mlcl.critical(lgr,msg)
+#define writeLog_error(lgr,msg) g_mlcl.error(lgr,msg)
+#define writeLog_warn(lgr,msg)
+#define writeLog_info(lgr,msg)
+#define writeLog_log(lgr,msg)
+#define writeLog_debug(lgr,msg)
+#endif
+
+
+#if (LOG_LEVEL == LOG_LEVEL_WARN)
+#define writeLog_critical(lgr,msg) g_mlcl.critical(lgr,msg)
+#define writeLog_error(lgr,msg) g_mlcl.error(lgr,msg)
+#define writeLog_warn(lgr,msg) g_mlcl.warn(lgr,msg)
+#define writeLog_info(lgr,msg)
+#define writeLog_log(lgr,msg)
+#define writeLog_debug(lgr,msg)
+#endif
+
+
+#if (LOG_LEVEL == LOG_LEVEL_LOG)
+#define writeLog_critical(lgr,msg) g_mlcl.critical(lgr,msg)
+#define writeLog_error(lgr,msg) g_mlcl.error(lgr,msg)
+#define writeLog_warn(lgr,msg) g_mlcl.warn(lgr,msg)
+#define writeLog_info(lgr,msg) g_mlcl.info(lgr,msg)
+#define writeLog_log(lgr,msg)
+#define writeLog_debug(lgr,msg)
+#endif
+
+
+#if (LOG_LEVEL == LOG_LEVEL_INFO)
+#define writeLog_critical(lgr,msg) g_mlcl.critical(lgr,msg)
+#define writeLog_error(lgr,msg) g_mlcl.error(lgr,msg)
+#define writeLog_warn(lgr,msg) g_mlcl.warn(lgr,msg)
+#define writeLog_log(lgr,msg) g_mlcl.log(lgr,msg)
+#define writeLog_info(lgr,msg) g_mlcl.info(lgr,msg)
+#define writeLog_debug(lgr,msg)
+#endif
+
+
+#if (LOG_LEVEL == LOG_LEVEL_DEBUG)
+#define writeLog_critical(lgr,msg) g_mlcl.critical(lgr,msg)
+#define writeLog_error(lgr,msg) g_mlcl.error(lgr,msg)
+#define writeLog_warn(lgr,msg) g_mlcl.warn(lgr,msg)
+#define writeLog_log(lgr,msg) g_mlcl.log(lgr,msg)
+#define writeLog_info(lgr,msg) g_mlcl.info(lgr,msg)
+#define writeLog_debug(lgr,msg) g_mlcl.debug(lgr,msg)
+#endif
+
+-- -- -- -- -- -- -- --
+-- -- -- -- -- -- -- --
+
+--
+--
+#define macro_set_logger_lib(lgr_lib) g_mlcl = lgr_lib
+#define macro_set_logger(lgi) local shmlgr_i = lgi
+--
+--
+#define mcLog_critical(msg)		writeLog_critical(shmlgr_i,msg)
+#define mcLog_error(msg)		writeLog_error(shmlgr_i,msg)
+#define mcLog_warn(msg)			writeLog_warn(shmlgr_i,msg)
+#define mcLog_log(msg)			writeLog_log(shmlgr_i,msg)
+#define mcLog_info(msg)			writeLog_info(shmlgr_i,msg)
+#define mcLog_debug(msg)		writeLog_debug(shmlgr_i,msg)
+--
+
+#define macro_logger(expr)  g_mlcl.expr
+
+
