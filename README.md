@@ -14,7 +14,7 @@ And so, the string manipulation operations will be removed from the program. A s
 (not geographical for this pejoration) may be produced in order to retain the program's original strings. Or, a translation may
 later be provided.
 
-##The Programs and What They Do
+## The Programs and What They Do
 
 Here is the list of programs to date:
 
@@ -84,7 +84,7 @@ Once the files are operated upon by the previous two procsses, they are ready fo
 **hashreplacer**
 > takes as input parameters, a file, a prefix which identifies a function call that has to be transformed, a map of strings to integers, and finally a template form indicating how to format the string id in the transformed programs.
 > 
-> Herw is an example:
+> Here is an example:
 > `hashreplacer $ff 'g_mlcl.' gazzeteer.txt '@' > "$fstem".lua`
 > 
 > *$ff* is a variable in a **bash** script that contains a file name.
@@ -92,7 +92,7 @@ Once the files are operated upon by the previous two procsses, they are ready fo
 > 
 > If the fourth parameter had been '(int)(@)', then the string id would be the number cast to an integer. This **C** style cast is not part of Lua, however.
 > 
-> **hashreplacer outputs to standard output.
+> **hashreplacer** outputs to standard output.
 > 
 
 Once **hashrepacer** has run, the process for transforming the file is done. But, since it may be helpful to go back and look at the transformed file, **clear\_empty\_lines** may be used to remove empty space in the file that might have been left by **gpp** or other programs. The output, however is not what the programmer should have to read for debugging purposes.
