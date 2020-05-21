@@ -1,8 +1,8 @@
 STRINGGLEANLOC=$1
 if [ -z $STRINGGLEANLOC ]; then
     STRINGGLEANLOC=../stringglean/bin
+    STRINGGLEANTOOLS=../stringglean/tools
 fi
-cp ${STRINGGLEANLOC}/subofpub /usr/local/bin/subofpub
 cp ${STRINGGLEANLOC}/stringglean /usr/local/bin/stringglean
 cp ${STRINGGLEANLOC}/hashreplacer /usr/local/bin/hashreplacer
 cp ${STRINGGLEANLOC}/clear_empty_lines /usr/local/bin/clear_empty_lines
@@ -12,4 +12,4 @@ if [ -d "$DIR" ]; then
 else
     mkdir $DIR
 fi
-cp ${STRINGGLEANLOC}/tools/*.sh ./tools/
+cp ${STRINGGLEANTOOLS}/*.sh ./tools/
