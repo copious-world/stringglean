@@ -81,6 +81,60 @@ int custom_type_conversion_finder(const string &parameter) {
 }
 
 #define PAR_SEP ".."
+// version loads parameters into an array before a terse call.
+pair<string,string> transform_params(const string &params,bool &extend_i,bool &extend_f) {
+	//
+	extend_i = false;
+	extend_f = false;
+	//
+	//
+	const int lggerlen = strlen(g_logger_id);
+	string true_params = params.substr(lggerlen + 1);
+	//
+	list<string> par_list = uni_splist(true_params,PAR_SEP,true);
+	//
+	list<string> rest_pars = {};
+	list<string> control_pars = {};
+	//
+	for ( auto par : par_list ) {
+		if ( STRING_START(par[0]) ) {
+			control_pars.push_back(unstring(par));
+		} else {
+			const int pt = parse_type_of(par,custom_type_conversion_finder);
+			control_pars.push_back("(-" + to_string(pt) + ")");
+			if ( pt == is_float ) {
+				extend_f = true;
+			}
+			rest_pars.push_back(par);
+		}
+	}
+	extend_i = !extend_f;
+	// //
+	control_pars.push_back("(-" + to_string(is_end) + ")");
+	control_pars.splice(control_pars.end(), rest_pars);
+	//
+	char buffer[16];
+	sprintf(buffer,"%u",(unsigned int)control_pars.size());
+	string true_pars = "shmlgr_i,";
+	true_pars += buffer;
+	string parbox = extend_f ? "_f_prs" : "_i_prs";
+	true_pars += "," + parbox;
+	//
+	string prefix_loading = "";
+	int i = 0;
+	for ( auto par : control_pars ) {
+		i++;
+		sprintf(buffer,"[%u] = ",(unsigned int)i);
+		prefix_loading += parbox + buffer + par + "; ";
+	}
+	//
+	pair<string,string> p(prefix_loading, true_pars);
+
+	return(p);
+}
+
+
+/*   method that moves like typed parameters into groups.
 string transform_params(const string &params,bool &extend_i,bool &extend_f) {
 	//
 	extend_i = false;
@@ -127,6 +181,7 @@ string transform_params(const string &params,bool &extend_i,bool &extend_f) {
 	prefix_pars += ',';
 	return(prefix_pars + join(control_pars,",",true) );
 }
+*/
 
 
 void locate_parameter_boundries(string &par_region,unsigned int &first_p,unsigned int &second_p) {
@@ -189,7 +244,7 @@ int main(int argc, char **argv) {
 	//char * tmp = (char *)file_str.c_str();
 	//const char * end = &(*file_str.end());
 	//unsigned char tlen = (unsigned char)strlen(target);
-	
+
 	string output = "";
 	
 	list<string> components = uni_splist(file_str,target,false);
@@ -239,7 +294,8 @@ int main(int argc, char **argv) {
 			//
 			bool extend_i = false;
 			bool extend_f = false;
-			params = transform_params(params,extend_i,extend_f); // reoder parameters, inserting control parameters for values.
+			pair<string,string> p = transform_params(params,extend_i,extend_f); // reoder parameters, inserting control parameters for values.
+			params = p.second;
 			if ( extend_i ) {
 				prefix += "i_";	// if only int parameters then use that logging form
 			} else if ( extend_f ) {
@@ -251,13 +307,20 @@ int main(int argc, char **argv) {
 			//
 			string transformed = transformable.replace(first_p+1,(second_p - first_p - 1),params);
 			//
-			*lit = transformed;
+			*lit = p.first + " " + prefix + transformed;
 		}
 
-		output += prefix;
+		//output += prefix;
 		output += *lit;
 		lit++;
 	}
+
+	string insertion = "\nlocal _i_prs = ffi.new(\"int [?]\", MAX_INT_PARMS)\nlocal _f_prs = ffi.new(\"float [?]\", MAX_FLOAT_PARMS)\n";
+	string i_target = "g_mlcl = require(\"shm_logger\")";
+	size_t pos = output.find(i_target) + i_target.size();
+	while ( output[pos] != '\n' ) pos++;
+	pos++;
+	output = output.insert(pos,insertion);
 	
 	cout << output << endl;
 	return(0);
